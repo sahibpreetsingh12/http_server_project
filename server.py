@@ -24,11 +24,21 @@ def start_server():
                 # Receive up to 1024 bytes of data from the client
                 # This is raw bytes from TCP stream
                 raw_request = client_conn.recv(1024)
+                # print(f"Raw request data: {raw_request}")
 
+
+                print(f"Raw request data from {client_addr}")
+
+                if not raw_request:
+                    print("Empty request (browser pre-connect or closed early). Skipping.\n")
+                    continue
                 # 🧠 .decode('utf-8') converts bytes → human-readable string
                 # HTTP is text-based (headers, methods, etc.)
                 # If you skip decoding, you get raw bytes like b'GET / HTTP/1.1\r\n...'
-                request = raw_request.decode('utf-8')
+                request = raw_request.decode('utf-8').strip()
+                if not request:
+                    print("No request received, skipping connection.")
+                    continue
 
                 print("--- HTTP Request Start ---")
                 print(request)  # 🕵️ This shows the full HTTP request from the client
@@ -40,10 +50,10 @@ def start_server():
 
                 # Basic routing: return different responses based on path
                 if path == "/":
-                    body = "Hello, world!"
+                    body = "<b>Hello, world!</b>"
                     response = (
                         "HTTP/1.1 200 OK\r\n"
-                        "Content-Type: text/plain\r\n"
+                        "Content-Type: text/html\r\n"
                         f"Content-Length: {len(body)}\r\n"
                         "\r\n"
                         f"{body}"
