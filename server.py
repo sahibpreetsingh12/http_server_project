@@ -4,6 +4,7 @@ HOST = '127.0.0.1'  # Localhost (your computer)
 PORT = 8080         # Port number (non-privileged, common for local dev)
 
 def start_server():
+    
     # Create a TCP socket using IPv4 and TCP (SOCK_STREAM)
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
         # Bind the socket to a specific address and port
